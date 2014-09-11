@@ -508,7 +508,7 @@ foreach ( $post_types as $post_type ) {
 
 	else
 		{
-		   echo '<label for="timeline_pro-posttype['.$post_type.']"><input type="checkbox" name="timeline_um_posttype['.$post_type.']" class="timeline_um_posttype" id="timeline_pro-posttype['.$post_type.']"  value ="'.$post_type.'" ' ?> 
+		   echo '<label for="timeline_um-posttype['.$post_type.']"><input type="checkbox" name="timeline_um_posttype['.$post_type.']" class="timeline_um_posttype" id="timeline_um-posttype['.$post_type.']"  value ="'.$post_type.'" ' ?> 
 		   <?php if ( isset( $timeline_um_posttype[$post_type] ) ) echo "checked"; ?>
 		   <?php echo' >'. $post_type.'</label><br />' ;
    
@@ -527,16 +527,16 @@ foreach ( $post_types as $post_type ) {
 <ul class="content_source_area" >
 
             <li><input class="timeline_um_content_source" name="timeline_um_content_source" id="timeline_um_content_source_latest" type="radio" value="latest" <?php if($timeline_um_content_source=="latest")  echo "checked";?> /> <label for="timeline_um_content_source_latest">Display from Latest Published</label>
-            <div class="timeline_um_content_source_latest content-source-box">Slider items will query from latest published product.</div>
+            <div class="timeline_um_content_source_latest content-source-box">Slider items will query from latest published post.</div>
             </li>
             
             <li><input class="timeline_um_content_source" name="timeline_um_content_source" id="timeline_um_content_source_older" type="radio" value="older" <?php if($timeline_um_content_source=="older")  echo "checked";?> /> <label for="timeline_um_content_source_older">Display from Older Published</label>
-            <div class="timeline_um_content_source_older content-source-box">Slider items will query from older published product.</div>
+            <div class="timeline_um_content_source_older content-source-box">Slider items will query from older published post.</div>
             </li>            
             
             <li><input class="timeline_um_content_source" name="timeline_um_content_source" id="timeline_um_content_source_featured" type="radio" value="featured" <?php if($timeline_um_content_source=="featured")  echo "checked";?> /> <label for="timeline_um_content_source_featured">Display from Featured Post</label>
             
-            <div class="timeline_um_content_source_featured content-source-box">Slider items will query from featured marked product.</div>
+            <div class="timeline_um_content_source_featured content-source-box">Slider items will query from featured marked post.</div>
             </li>
             
             <li><input class="timeline_um_content_source" name="timeline_um_content_source" id="timeline_um_content_source_year" type="radio" value="year" <?php if($timeline_um_content_source=="year")  echo "checked";?> /> <label for="timeline_um_content_source_year">Display from Only Year</label>
