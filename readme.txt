@@ -61,6 +61,7 @@ then paste this shortcode anywhere in your page to display slider<br />
 
 == Screenshots ==
 
+1. screenshot-1
 
 
 == Changelog ==
