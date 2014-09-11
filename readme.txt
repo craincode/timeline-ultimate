@@ -51,7 +51,7 @@ When Timeline Ultimate options setup done please publish Timeline Ultimate as li
 
 and then copy shortcode from top of <strong>Timeline Ultimate Options</strong> `[timeline_um  id="1234" ]`<br />
 
-then paste this shortcode anywhere in your page to display slider<br />
+then paste this shortcode anywhere in your page to display timeline<br />
 
 
 
