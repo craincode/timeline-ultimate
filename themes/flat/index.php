@@ -178,7 +178,7 @@ function timeline_um_body_flat($post_id)
 		while ( $wp_query->have_posts() ) : $wp_query->the_post();
 		
 		$timeline_um_featured = get_post_meta( get_the_ID(), '_featured', true );
-		$timeline_um_thumb = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), $timeline_um_items_thumb_size );
+		$timeline_um_thumb = wp_get_attachment_image_src( get_post_thumbnail_id(get_the_ID()), $timeline_um_items_thumb_size );
 		$timeline_um_thumb_url = $timeline_um_thumb['0'];
 		
 		

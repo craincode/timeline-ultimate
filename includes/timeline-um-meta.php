@@ -661,15 +661,10 @@ function meta_boxes_timeline_um_save( $post_id ) {
 	update_post_meta( $post_id, 'timeline_um_bg_img', $timeline_um_bg_img );	
 	update_post_meta( $post_id, 'timeline_um_themes', $timeline_um_themes );
 	update_post_meta( $post_id, 'timeline_um_total_items', $timeline_um_total_items );	
-
-	
-	update_post_meta( $post_id, 'timeline_um_slider_pagination_bg', $timeline_um_slider_pagination_bg );
-	update_post_meta( $post_id, 'timeline_um_slider_pagination_text_color', $timeline_um_slider_pagination_text_color );		
 	
 	update_post_meta( $post_id, 'timeline_um_post_content', $timeline_um_post_content );
 	update_post_meta( $post_id, 'timeline_um_post_excerpt_count', $timeline_um_post_excerpt_count );	
 	update_post_meta( $post_id, 'timeline_um_post_excerpt_text', $timeline_um_post_excerpt_text );	
-	
 	
 	update_post_meta( $post_id, 'timeline_um_content_source', $timeline_um_content_source );
 	update_post_meta( $post_id, 'timeline_um_content_year', $timeline_um_content_year );
