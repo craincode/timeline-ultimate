@@ -181,6 +181,13 @@
   text-align: left;
 }
 
+.timeline_um-flat .timeline_um-meta {
+  font-size: 12px;
+  padding: 0 10px 10px;
+  text-align: left;
+}
+
+
 .timeline_um-flat .timeline_um-content {
   padding: 0 10px;
   text-align: left;

@@ -21,44 +21,6 @@
 
 
 
-
-#timeline_um_metabox ul.tab-nav {
-  clear: both;
-  margin: 0;
-  padding: 0;
-}
-
-#timeline_um_metabox ul.tab-nav li {
-  background: #e6e6e6;
-  cursor: pointer;
-  display: inline-block;
-  float: left;
-  margin: 0;
-  padding: 8px 15px;
-}
-
-#timeline_um_metabox ul.tab-nav li.active{
-	background:#d8d6d6;
-	border-top:2px solid #11b063;
-	padding-top:6px;
-	}
-#timeline_um_metabox ul.box {
-  clear: both;
-  margin: 0;
-  padding: 0;
-}
-
-#timeline_um_metabox ul.box li.tab-box {
-  border: 1px solid rgb(153, 153, 153);
-  display: none;
-  margin: 0;
-  padding: 20px 0 10px 10px;
-  width: 100%;
-}
-
-
-
-
 #timeline_um_metabox .timeline_um_loading_taxonomy_category {
   background: url("loading.gif") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
   height: 11px;
@@ -87,15 +49,6 @@
   display: block;
   margin: 10px 10px 0 20px;
   padding: 10px 0 10px 5px;
-}
-
-#timeline_um_metabox .tab-box td {
-  border-left: 3px solid #fff;
-}
-
-#timeline_um_metabox .tab-box td:hover {
-  background: #e6e6e6;
-  border-left: 3px solid #11b063;
 }
 
 
@@ -167,18 +120,5 @@
 	background: url("google-plus.png") no-repeat scroll 0 0 / 100% auto #FF0000;
 	background-image:url("google-plus.png");
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

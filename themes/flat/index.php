@@ -8,21 +8,7 @@ function timeline_um_body_flat($post_id)
 		$timeline_um_bg_img = get_post_meta( $post_id, 'timeline_um_bg_img', true );
 		$timeline_um_themes = get_post_meta( $post_id, 'timeline_um_themes', true );
 		$timeline_um_total_items = get_post_meta( $post_id, 'timeline_um_total_items', true );		
-		$timeline_um_column_number = get_post_meta( $post_id, 'timeline_um_column_number', true );
-		$timeline_um_auto_play = get_post_meta( $post_id, 'timeline_um_auto_play', true );
-		$timeline_um_stop_on_hover = get_post_meta( $post_id, 'timeline_um_stop_on_hover', true );
-		$timeline_um_slider_navigation = get_post_meta( $post_id, 'timeline_um_slider_navigation', true );
-		$timeline_um_slide_speed = get_post_meta( $post_id, 'timeline_um_slide_speed', true );
-				
-		$timeline_um_slider_pagination = get_post_meta( $post_id, 'timeline_um_slider_pagination', true );
-		$timeline_um_pagination_slide_speed = get_post_meta( $post_id, 'timeline_um_pagination_slide_speed', true );
-		$timeline_um_slider_pagination_count = get_post_meta( $post_id, 'timeline_um_slider_pagination_count', true );
-		
-		$timeline_um_slider_pagination_bg = get_post_meta( $post_id, 'timeline_um_slider_pagination_bg', true );		
-		
-		
-		$timeline_um_slider_touch_drag = get_post_meta( $post_id, 'timeline_um_slider_touch_drag', true );
-		$timeline_um_slider_mouse_drag = get_post_meta( $post_id, 'timeline_um_slider_mouse_drag', true );
+;
 		
 		$timeline_um_content_source = get_post_meta( $post_id, 'timeline_um_content_source', true );
 		$timeline_um_content_year = get_post_meta( $post_id, 'timeline_um_content_year', true );
@@ -50,10 +36,11 @@ function timeline_um_body_flat($post_id)
 		
 		$timeline_um_items_thumb_size = get_post_meta( $post_id, 'timeline_um_items_thumb_size', true );
 		$timeline_um_items_thumb_max_hieght = get_post_meta( $post_id, 'timeline_um_items_thumb_max_hieght', true );
+			
 		
-		$timeline_um_ribbon_name = get_post_meta( $post_id, 'timeline_um_ribbon_name', true );		
-		
-		
+		$timeline_um_items_date = get_post_meta( $post_id, 'timeline_um_items_date', true );		
+		$timeline_um_items_author = get_post_meta( $post_id, 'timeline_um_items_author', true );	
+		$timeline_um_items_categories = get_post_meta( $post_id, 'timeline_um_items_categories', true );	
 		
 		
 		$timeline_um_body = '';
@@ -222,38 +209,59 @@ function timeline_um_body_flat($post_id)
 		
 		if(!empty($timeline_um_thumb_url))
 			{
-					$timeline_um_body.= '
-		<div style="max-height:'.$timeline_um_items_thumb_max_hieght.';" class="timeline_um-thumb">
-			<a href="'.get_permalink().'">
-				<img src="'.$timeline_um_thumb_url.'" />
-			</a>
-		</div>';
+					$timeline_um_body.= '<div style="max-height:'.$timeline_um_items_thumb_max_hieght.';" class="timeline_um-thumb">
+					<a href="'.get_permalink().'"><img src="'.$timeline_um_thumb_url.'" /></a>
+					</div>';
 			}
 				
-		$timeline_um_body.= '
-			<div class="timeline_um-title" style="color:'.$timeline_um_items_title_color.';font-size:'.$timeline_um_items_title_font_size.'">'.get_the_title().'
-			</div>
+		$timeline_um_body.= '<div class="timeline_um-title" style="color:'.$timeline_um_items_title_color.';font-size:'.$timeline_um_items_title_font_size.'">'.get_the_title().'
+			</div>';
 			
-<div class="timeline_um-share" >
+			
+$categories = get_the_category();
+$separator = ', ';
+$category_output = '';
+if($categories){
+	foreach($categories as $category) {
+		$category_output .= '<a href="'.get_category_link( $category->term_id ).'" title="' . esc_attr( sprintf( __( "View all posts in %s" ), $category->name ) ) . '">'.$category->cat_name.'</a>'.$separator;
+	}
 
-<span class="fb">
-	<a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u='.get_permalink().'"> </a>
-</span>
-<span class="twitter">
-	<a target="_blank" href="https://twitter.com/intent/tweet?url='.get_permalink().'&text='.get_the_title().'"></a>
-</span>
-<span class="gplus">
-	<a target="_blank" href="https://plus.google.com/share?url='.get_permalink().'"></a>
-</span>
-
-</div>	
+}
+			
+			
+		$timeline_um_body.= '<div class="timeline_um-meta" style="color:'.$timeline_um_items_content_color.';">
+			';
+		if($timeline_um_items_date == 'yes')
+		$timeline_um_body.= 'Date: '.get_the_date();
+		
+		if($timeline_um_items_author == 'yes')
+		$timeline_um_body.= ' By: '.get_the_author();
+		
+		if($timeline_um_items_categories == 'yes')
+		$timeline_um_body.= ' Category: '.trim($category_output, $separator);
+			
+		$timeline_um_body.= '</div>';	
+		
+		
+				
+		$timeline_um_body.= '<div class="timeline_um-share" >
+			<span class="fb">
+				<a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u='.get_permalink().'"> </a>
+			</span>
+			<span class="twitter">
+				<a target="_blank" href="https://twitter.com/intent/tweet?url='.get_permalink().'&text='.get_the_title().'"></a>
+			</span>
+			<span class="gplus">
+				<a target="_blank" href="https://plus.google.com/share?url='.get_permalink().'"></a>
+			</span>
+			</div>';
 			
 			
 			
-			<div class="timeline_um-content" style="color:'.$timeline_um_items_content_color.';font-size:'.$timeline_um_items_content_font_size.'">'.timeline_um_get_content($timeline_um_post_content, get_the_ID(), $post_id ).'
-			</div>			
+			$timeline_um_body.= '<div class="timeline_um-content" style="color:'.$timeline_um_items_content_color.';font-size:'.$timeline_um_items_content_font_size.'">'.timeline_um_get_content($timeline_um_post_content, get_the_ID(), $post_id ).'
+			</div>';		
 			
-			</div>
+			$timeline_um_body.= '</div>
 
 		</li>';
 		
