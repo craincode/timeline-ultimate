@@ -1,10 +1,10 @@
 <?php
 /*
 Plugin Name: Timeline Ultimate
-Plugin URI: 
+Plugin URI: http://paratheme.com/items/timeline-ultimate-timeline-style-grid-for-wordpress/
 Description: Fully responsive and mobile ready facebook style timeline for wordpress.
-Version: 1.1
-Author: wpkids
+Version: 1.2
+Author: paratheme
 Author URI: http://paratheme.com
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -13,7 +13,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 define('timeline_um_plugin_url', WP_PLUGIN_URL . '/' . plugin_basename( dirname(__FILE__) ) . '/' );
 define('timeline_um_plugin_dir', plugin_dir_path( __FILE__ ) );
 define('timeline_um_wp_url', 'http://wordpress.org/plugins/timeline-ultimate' );
-define('timeline_um_pro_url', 'http://paratheme.com' );
+define('timeline_um_pro_url', 'http://paratheme.com/items/timeline-ultimate-timeline-style-grid-for-wordpress/' );
 define('timeline_um_demo_url', 'http://paratheme.com' );
 define('timeline_um_conatct_url', 'http://paratheme.com/contact' );
 define('timeline_um_plugin_name', 'Timeline Ultimate' );
@@ -33,7 +33,6 @@ function timeline_um_init_scripts()
 	{
 		wp_enqueue_script('jquery');
 		wp_enqueue_script('timeline_um_js', plugins_url( '/js/scripts.js' , __FILE__ ) , array( 'jquery' ));
-		
 		wp_localize_script('timeline_um_js', 'timeline_um_ajax', array( 'timeline_um_ajaxurl' => admin_url( 'admin-ajax.php')));
 		wp_enqueue_style('timeline_um_style', timeline_um_plugin_url.'css/style.css');
 
@@ -63,7 +62,7 @@ register_deactivation_hook(__FILE__, 'timeline_um_deactivation');
 
 function timeline_um_activation()
 	{
-		$timeline_um_version= "1.1";
+		$timeline_um_version= "1.2";
 		update_option('timeline_um_version', $timeline_um_version); //update plugin version.
 		
 		$timeline_um_customer_type= "free"; //customer_type "free"

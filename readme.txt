@@ -4,7 +4,7 @@
 	Tags: responsive timeline, Responsive Timeline WordPress, timeline, Timeline for WordPress
 	Requires at least: 3.8
 	Tested up to: 4.0
-	Stable tag: 1.1
+	Stable tag: 1.2
 	License: GPLv2 or later
 	License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -66,6 +66,9 @@ then paste this shortcode anywhere in your page to display timeline<br />
 
 == Changelog ==
 
+	
+	= 1.2 =
+    * 20/12/2014 add - Ajax Load more button.
 	
 	= 1.1 =
     * 20/12/2014 add - Add option for display post date.
