@@ -18,15 +18,15 @@ Timeline Ultimate is pure html & css3 responsive timeline grid for wordpress. by
 
 ### Timeline Ultimate by http://paratheme.com
 
+* [Upgrade to Premium!&raquo;](http://paratheme.com/items/timeline-ultimate-timeline-style-grid-for-wordpress/)
 
 
 
-<strong>Plugin Features</strong><br />
+<strong>Plugin Features</strong>
 
 * Fully responsive and mobile ready.
 * Unlimited Timeline anywhere.
-* Query post from latest post, Older Published, Featured Items, by Only Year, by Month of a year, Taxonomy & Categories, post id.
-* Different Theme.
+* Query post from latest post, Older Published, Featured Items, by Only Year, by Month of a year.
 * Custom number of Timeline post to query.
 * Timeline post Thumbnail images Size selection.
 * Background Image for Timeline area.
@@ -35,6 +35,15 @@ Timeline Ultimate is pure html & css3 responsive timeline grid for wordpress. by
 * Timeline Post Content Color.
 * Timeline Post Content font size.
 
+<strong>Premium Features</strong>
+
+
+* Life time free update.
+* Life time support via forum.
+* 7 Days Refund.
+* Query post from Taxonomy & Categories, Post ids.
+* Submit Comments.
+* Ajax load more comment.
 
 
 
