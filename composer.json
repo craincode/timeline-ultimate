@@ -1,5 +1,5 @@
 {
-  "name": "craincode/wp-timeline-ultimate",
+  "name": "craincode/timeline-ultimate",
   "type": "wordpress-plugin",
   "license": "GPL-2.0-or-later",
   "description": "Fully responsive and mobile ready facebook style timeline for WordPress.",
@@ -10,7 +10,7 @@
     }
   ],
   "support": {
-    "issues": "https://github.com/craincode/wp-timeline-ultimate/issues"
+    "issues": "https://github.com/craincode/timeline-ultimate/issues"
   },
   "config": {
     "discard-changes": true,
