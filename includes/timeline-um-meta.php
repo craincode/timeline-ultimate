@@ -29,14 +29,12 @@ function timeline_um_posttype_register()
         'menu_position' => null,
         'supports' => ['title'],
         'menu_icon' => 'dashicons-media-spreadsheet',
-
     ];
 
     register_post_type('timeline_um', $args);
 }
 
 add_action('init', 'timeline_um_posttype_register');
-
 
 /**
  * Adds a box to the main column on the Post and Page edit screens.
@@ -56,9 +54,8 @@ add_action('add_meta_boxes', 'meta_boxes_timeline_um');
 
 function meta_boxes_timeline_um_input($post)
 {
-    global $post;
-    wp_nonce_field('meta_boxes_timeline_um_input', 'meta_boxes_timeline_um_input_nonce');
 
+    wp_nonce_field('meta_boxes_timeline_um_input', 'meta_boxes_timeline_um_input_nonce');
 
     $timeline_um_bg_img = get_post_meta($post->ID, 'timeline_um_bg_img', true);
     $timeline_um_themes = get_post_meta($post->ID, 'timeline_um_themes', true);
@@ -130,9 +127,9 @@ function meta_boxes_timeline_um_input($post)
                 <div class="option-box">
                     <p class="option-title">Number of post to display.</p>
                     <p class="option-info"></p>
-                    <input type="text" placeholder="ex:5 - Number Only" name="timeline_um_total_items" value="<?php
+                    <input type="number" placeholder="5" name="timeline_um_total_items" value="<?php
                     if (!empty($timeline_um_total_items)) {
-                        echo $timeline_um_total_items;
+                        echo absint($timeline_um_total_items);
                     } else {
                         echo 5;
                     } ?>"/>
@@ -170,7 +167,7 @@ function meta_boxes_timeline_um_input($post)
                     </select>
                 </div>
                 <div class="option-box">
-                    <p class="option-title">Thumbnail max hieght(px)</p>
+                    <p class="option-title">Thumbnail max height(px)</p>
                     <p class="option-info"></p>
                     <input type="text" name="timeline_um_items_thumb_max_hieght" placeholder="ex:150px number with px"
                            id="timeline_um_items_thumb_max_hieght" value="<?php
@@ -239,36 +236,37 @@ function meta_boxes_timeline_um_input($post)
                     <p class="option-title">Themes</p>
                     <p class="option-info"></p>
                     <select name="timeline_um_themes">
-                        <option class="timeline_um_themes_flat" value="flat" <?php
-                        if ($timeline_um_themes == "flat") {
-                            echo "selected";
-                        } ?>>Flat
-                        </option>
+                        <?php
+                        foreach (glob(TIMELINE_UM_PLUGIN_DIR . 'themes/*/index.php') as $filename) {
+                            preg_match('/themes\/(\w+)\/style/', $filename, $theme);
+                            printf(
+                                    '<option class="timeline_um_themes" value="%1$s" %2$s>%1$s</option>',
+                                $theme['1'],
+                                selected($theme['1'], $timeline_um_themes)
+                            );
+                        }
+                        ?>
                     </select>
                 </div>
                 <div class="option-box">
                     <p class="option-title">Background Image</p>
                     <p class="option-info"></p>
                     <script>
-                      jQuery(document).ready(function (jQuery) {
-                        jQuery('.timeline_um_bg_img_list li').click(function () {
-                          jQuery('.timeline_um_bg_img_list li.bg-selected').removeClass('bg-selected')
-                          jQuery(this).addClass('bg-selected')
+                      jQuery(document).ready(function ($) {
+                        $('.timeline_um_bg_img_list li').on('click', function () {
+                          $('.timeline_um_bg_img_list li.bg-selected').removeClass('bg-selected')
+                          $(this).addClass('bg-selected')
 
-                          var timeline_um_bg_img = jQuery(this).attr('data-url')
+                          var timeline_um_bg_img = $(this).attr('data-url')
 
-                          jQuery('#timeline_um_bg_img').val(timeline_um_bg_img)
-
+                          $('#timeline_um_bg_img').val(timeline_um_bg_img)
                         })
-
                       })
-
                     </script>
                     <?php
 
-                    $dir_path = timeline_um_plugin_dir . "css/bg/";
+                    $dir_path = TIMELINE_UM_PLUGIN_DIR . "css/bg/";
                     $filenames = glob($dir_path . "*.png*");
-
 
                     $timeline_um_bg_img = get_post_meta($post->ID, 'timeline_um_bg_img', true);
 
@@ -276,25 +274,20 @@ function meta_boxes_timeline_um_input($post)
                         $timeline_um_bg_img = "";
                     }
 
-
                     $count = count($filenames);
-
 
                     $i = 0;
                     echo "<ul class='timeline_um_bg_img_list' >";
 
                     while ($i < $count) {
                         $filelink = str_replace($dir_path, "", $filenames[$i]);
-
-                        $filelink = timeline_um_plugin_url . "css/bg/" . $filelink;
-
+                        $filelink = TIMELINE_UM_PLUGIN_URL . "css/bg/" . $filelink;
 
                         if ($timeline_um_bg_img == $filelink) {
                             echo '<li  class="bg-selected" data-url="' . $filelink . '">';
                         } else {
                             echo '<li   data-url="' . $filelink . '">';
                         }
-
 
                         echo "<img  width='70px' height='50px' src='" . $filelink . "' />";
                         echo "</li>";
@@ -304,8 +297,6 @@ function meta_boxes_timeline_um_input($post)
                     echo "</ul>";
 
                     echo "<input style='width:100%;' value='" . $timeline_um_bg_img . "'    placeholder='Please select image or left blank' id='timeline_um_bg_img' name='timeline_um_bg_img'  type='text' />";
-
-
                     ?>
 
                 </div>
