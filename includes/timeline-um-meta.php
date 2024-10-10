@@ -598,7 +598,7 @@ function meta_boxes_timeline_um_save(?int $post_id): void
     $timeline_um_taxonomy = sanitize_text_field($_POST['timeline_um_taxonomy']);
     $timeline_um_taxonomy_category = stripslashes_deep($_POST['timeline_um_taxonomy_category']);
 
-    $timeline_um_post_ids = stripslashes_deep($_POST['timeline_um_post_ids']);
+    $timeline_um_post_ids = stripslashes_deep($_POST['timeline_um_post_ids'] ?? '');
 
     $timeline_um_middle_line_bg = sanitize_text_field($_POST['timeline_um_middle_line_bg']);
     $timeline_um_middle_circle_bg = sanitize_text_field($_POST['timeline_um_middle_circle_bg']);
