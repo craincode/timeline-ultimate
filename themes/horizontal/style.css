@@ -1,46 +1,37 @@
+.timeline_um-container {
+    display: inline-block;
+}
+
+.timeline_um-container .middle-line {
+    height: 4px;
+    position: relative;
+    top: 10px;
+}
+
 .timeline_um-horizontal {
     margin: 0 !important;
-    padding: 0 !important;
-}
-
-.timeline_um-horizontal .even {
-    clear: left;
-    float: left;
-}
-
-.timeline_um-horizontal .odd {
-    clear: right;
-    float: right;
-    margin-top: 100px !important;
+    padding: 10px !important;
+    height: 600px;
+    overflow-x: auto;
+    overflow-y: hidden;
 }
 
 .timeline_um-horizontal .timeline_um-item {
     display: inline-block;
-    margin: 10px 0;
-    padding-bottom: 20px;
+    margin: 0;
+    padding-bottom: 0;
     position: relative;
     vertical-align: top;
-    width: 50%;
+    width: 400px;
     z-index: 100;
 }
 
 .timeline_um-horizontal .timeline_um-post {
-    padding-bottom: 20px;
     background: none repeat scroll 0 0 rgb(255, 255, 255);
     border: 1px solid rgb(174, 173, 173);
     position: relative;
-    width: 90%;
+    margin: 20px;
     border-radius: 4px;
-}
-
-.timeline_um-horizontal .even .timeline_um-post {
-    float: left;
-    margin-left: 15px;
-}
-
-.timeline_um-horizontal .odd .timeline_um-post {
-    float: right;
-    margin-right: 15px;
 }
 
 .timeline_um-horizontal .timeline_um-item .timeline_um-arrow {
@@ -51,52 +42,13 @@
     width: 0;
 }
 
-.timeline_um-horizontal .even .timeline_um-arrow {
-    right: -1px;
-}
-
-.timeline_um-horizontal .even .timeline_um-arrow {
-    right: -1px;
-}
-
-.timeline_um-horizontal .even .timeline_um-arrow {
+.timeline_um-horizontal .timeline_um-arrow {
     background: #ffffff;
     border: 1px solid #a3a3a3;
 }
 
-.timeline_um-horizontal .even .timeline_um-arrow:after,
-.timeline_um-horizontal .even .timeline_um-arrow:before {
-    left: 100%;
-    top: 50%;
-    border: solid transparent;
-    content: " ";
-    height: 0;
-    width: 0;
-    position: absolute;
-    pointer-events: none;
-}
-
-.timeline_um-horizontal .even .timeline_um-arrow:after {
-    border-color: rgba(255, 255, 255, 0);
-    border-left-color: #ffffff;
-    border-width: 8px;
-    margin-top: -8px;
-}
-
-.timeline_um-horizontal .even .timeline_um-arrow:before {
-    border-color: rgba(163, 163, 163, 0);
-    border-left-color: #a3a3a3;
-    border-width: 9px;
-    margin-top: -9px;
-}
-
-.timeline_um-horizontal .odd .timeline_um-arrow {
-    background: #ffffff;
-    border: 1px solid #a3a3a3;
-}
-
-.timeline_um-horizontal .odd .timeline_um-arrow:after,
-.timeline_um-horizontal .odd .timeline_um-arrow:before {
+.timeline_um-horizontal .timeline_um-arrow:after,
+.timeline_um-horizontal .timeline_um-arrow:before {
     right: 100%;
     top: 50%;
     border: solid transparent;
@@ -107,14 +59,14 @@
     pointer-events: none;
 }
 
-.timeline_um-horizontal .odd .timeline_um-arrow:after {
+.timeline_um-horizontal .timeline_um-arrow:after {
     border-color: rgba(255, 255, 255, 0);
     border-right-color: #ffffff;
     border-width: 8px;
     margin-top: -8px;
 }
 
-.timeline_um-horizontal .odd .timeline_um-arrow:before {
+.timeline_um-horizontal .timeline_um-arrow:before {
     border-color: rgba(163, 163, 163, 0);
     border-right-color: #a3a3a3;
     border-width: 9px;
@@ -124,19 +76,14 @@
 .timeline_um-horizontal .timeline_um-button {
     background: none repeat scroll 0 0 rgb(40, 200, 168);
     border-radius: 50%;
-    box-shadow: 0 0 3px -1px rgb(0, 0, 0);
     height: 15px;
     position: absolute;
-    top: 30px;
+    top: -10px;
     width: 15px;
 }
 
-.timeline_um-horizontal .even .timeline_um-button {
-    right: -8px;
-}
-
-.timeline_um-horizontal .odd .timeline_um-button {
-    left: -7px;
+.timeline_um-horizontal .timeline_um-button {
+    left: calc(50% + 10px - 15px);
 }
 
 .timeline_um-container .load-more {
