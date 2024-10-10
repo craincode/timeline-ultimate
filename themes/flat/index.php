@@ -43,7 +43,7 @@ function timeline_um_body_flat($post_id)
 
     $timeline_um_body .= '
 		<div style="background:' . $timeline_um_middle_line_bg . '" class="middle-line"></div>
-		<ul  class="timeline_um-items data-timeline_um-' . $post_id . ' data-timeline-theme-' . $timeline_um_themes . '">';
+		<ul class="timeline_um-items timeline_um-' . $post_id . ' timeline_um-' . $timeline_um_themes . '">';
 
     global $wp_query;
 
