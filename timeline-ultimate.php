@@ -23,11 +23,28 @@ add_action('plugins_loaded', static function (): void {
     }
 
     add_action('wp_enqueue_scripts', static function (): void {
+        global $post;
         wp_register_script('timeline_um', plugins_url('/js/scripts.js', __FILE__), ['jquery']);
         wp_localize_script('timeline_um', 'timelineUltimate', ['ajaxurl' => admin_url('admin-ajax.php')]);
-        foreach (glob(TIMELINE_UM_PLUGIN_URL . 'themes/*/style.css') as $filename) {
-            preg_match('/themes\/(\w+)\/style/', $filename, $theme);
-            wp_register_style("timeline_um-$theme[1]", $filename);
+
+        $themes = [];
+        foreach (glob(TIMELINE_UM_PLUGIN_DIR . 'themes/*/style.css') as $filename) {
+            preg_match('/themes\/(\w+)\/style/', $filename, $matches);
+            $themes[$matches[1]] = plugins_url(str_replace(TIMELINE_UM_PLUGIN_DIR, '', $filename), __FILE__);
+            wp_register_style("timeline_um-$matches[1]", esc_url($themes[$matches[1]]));
+        }
+
+        if (is_singular() && is_a($post, 'WP_Post') && has_shortcode($post->post_content, 'timeline_um')) {
+            if (
+                preg_match_all('/' . get_shortcode_regex() . '/s', $post->post_content, $matches) &&
+                array_key_exists(2, $matches) &&
+                array_key_exists(3, $matches) &&
+                in_array('timeline_um', $matches[2], true)
+            ) {
+                $atts = shortcode_parse_atts($matches[3][0] ?? '');
+                $theme = !isset($atts['id']) ? '' : get_post_meta($atts['id'], 'timeline_um_themes', true);
+                wp_enqueue_style("timeline_um-$theme");
+            }
         }
     });
 
@@ -49,10 +66,10 @@ add_action('plugins_loaded', static function (): void {
     add_shortcode('timeline_um', static function (array $atts): string
     {
         $atts = shortcode_atts([
-            'id' => '',
+            'id' => 0,
         ], $atts);
 
-        $post_id = $atts['id'];
+        $post_id = absint($atts['id']);
 
         $theme = get_post_meta($post_id, 'timeline_um_themes', true);
         wp_enqueue_script('timeline_um');
