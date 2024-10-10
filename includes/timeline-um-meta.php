@@ -32,9 +32,17 @@ function timeline_um_posttype_register()
     ];
 
     register_post_type('timeline_um', $args);
+    remove_post_type_support('timeline_um', 'elementor');
 }
 
 add_action('init', 'timeline_um_posttype_register');
+
+add_action('add_meta_boxes', static function (): void {
+    remove_meta_box('wpseo_meta', 'timeline_um', 'normal');
+    remove_meta_box('yoast_internal_linking', 'timeline_um', 'side');
+    remove_meta_box('slider_revolution_metabox', 'timeline_um', 'side');
+    remove_meta_box('lh_archive_post_status-archive_date-div', 'timeline_um', 'side');
+}, 100);
 
 /**
  * Adds a box to the main column on the Post and Page edit screens.
@@ -54,7 +62,6 @@ add_action('add_meta_boxes', 'meta_boxes_timeline_um');
 
 function meta_boxes_timeline_um_input($post)
 {
-
     wp_nonce_field('meta_boxes_timeline_um_input', 'meta_boxes_timeline_um_input_nonce');
 
     $timeline_um_bg_img = get_post_meta($post->ID, 'timeline_um_bg_img', true);
@@ -238,9 +245,9 @@ function meta_boxes_timeline_um_input($post)
                     <select name="timeline_um_themes">
                         <?php
                         foreach (glob(TIMELINE_UM_PLUGIN_DIR . 'themes/*/index.php') as $filename) {
-                            preg_match('/themes\/(\w+)\/style/', $filename, $theme);
+                            preg_match('/themes\/(\w+)\/index/', $filename, $theme);
                             printf(
-                                    '<option class="timeline_um_themes" value="%1$s" %2$s>%1$s</option>',
+                                '<option class="timeline_um_themes" value="%1$s" %2$s>%1$s</option>',
                                 $theme['1'],
                                 selected($theme['1'], $timeline_um_themes)
                             );
