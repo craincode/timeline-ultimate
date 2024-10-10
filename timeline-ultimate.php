@@ -32,7 +32,7 @@ add_action('plugins_loaded', static function (): void {
             wp_register_style(
                 "timeline_um-$matches[1]",
                 esc_url(plugins_url(str_replace(TIMELINE_UM_PLUGIN_DIR, '', $filename), __FILE__)),
-                get_plugin_data(__FILE__)['Version']
+                strval(filemtime($filename)),
             );
         }
 
@@ -51,11 +51,16 @@ add_action('plugins_loaded', static function (): void {
     });
 
     add_action('admin_enqueue_scripts', static function (string $hook): void {
+        if ($hook !== 'post.php') {
+            return;
+        }
+
         wp_enqueue_style('timeline_um', TIMELINE_UM_PLUGIN_URL . 'css/style.css');
 
         wp_enqueue_script('ParaAdmin', plugins_url('ParaAdmin/js/ParaAdmin.js', __FILE__), ['jquery']);
+        wp_enqueue_script('wp-color-picker');
         wp_enqueue_script(
-            'timeline_um_color_picker',
+            'timeline_um-color-picker',
             plugins_url('/js/color-picker.js', __FILE__),
             ['wp-color-picker'],
             false,
