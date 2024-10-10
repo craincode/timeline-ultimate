@@ -60,7 +60,7 @@ function meta_boxes_timeline_um()
 add_action('add_meta_boxes', 'meta_boxes_timeline_um');
 
 
-function meta_boxes_timeline_um_input($post)
+function meta_boxes_timeline_um_input($post): void
 {
     wp_nonce_field('meta_boxes_timeline_um_input', 'meta_boxes_timeline_um_input_nonce');
 
@@ -532,69 +532,62 @@ function meta_boxes_timeline_um_input($post)
                     </ul>
                 </div>
 
-
             </li>
             <li style="display: none;" class="box4 tab-box">
                 <div class="option-box">
                     <p class="option-title">Timeline Ultimate - Customized by Austin Passy @ Crain</p>
                     <?php
 
-                    $timeline_um_version = get_option('timeline_um_version');
-                    echo '<p>You are using version  ' . $timeline_um_version . '</strong> of <strong>Timeline Ultimate</strong>.';
+                    $timeline_um_version = !function_exists('') ? null : get_plugin_data(__FILE__)['Version'];
+                    if ($timeline_um_version) {
+                        printf('<p>You are using version <strong>%s</strong>.</p>', $timeline_um_version);
+                    }
                     ?>
                 </div>
             </li>
         </ul>
-
-
     </div>
-
-
     <?php
 }
 
 /**
  * When the post is saved, saves our custom data.
- *
- * @param int $post_id The ID of the post being saved.
+ * @param int|null $post_id The ID of the post being saved.
  */
-function meta_boxes_timeline_um_save($post_id)
+function meta_boxes_timeline_um_save(?int $post_id): void
 {
     /*
-     * We need to verify this came from the our screen and with proper authorization,
+     * We need to verify this came from our screen and with proper authorization,
      * because save_post can be triggered at other times.
      */
 
     // Check if our nonce is set.
-    if (!isset($_POST['meta_boxes_timeline_um_input_nonce'])) {
-        return $post_id;
+    if (!$post_id || !isset($_POST['meta_boxes_timeline_um_input_nonce'])) {
+        return;
     }
 
     $nonce = $_POST['meta_boxes_timeline_um_input_nonce'];
 
     // Verify that the nonce is valid.
     if (!wp_verify_nonce($nonce, 'meta_boxes_timeline_um_input')) {
-        return $post_id;
+        return;
     }
 
     // If this is an autosave, our form has not been submitted, so we don't want to do anything.
     if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
-        return $post_id;
+        return;
     }
 
-
-    /* OK, its safe for us to save the data now. */
+    /* OK, it's safe for us to save the data now. */
 
     // Sanitize user input.
     $timeline_um_bg_img = sanitize_text_field($_POST['timeline_um_bg_img']);
     $timeline_um_themes = sanitize_text_field($_POST['timeline_um_themes']);
     $timeline_um_total_items = sanitize_text_field($_POST['timeline_um_total_items']);
 
-
     $timeline_um_post_content = sanitize_text_field($_POST['timeline_um_post_content']);
     $timeline_um_post_excerpt_count = sanitize_text_field($_POST['timeline_um_post_excerpt_count']);
     $timeline_um_post_excerpt_text = sanitize_text_field($_POST['timeline_um_post_excerpt_text']);
-
 
     $timeline_um_content_source = sanitize_text_field($_POST['timeline_um_content_source']);
     $timeline_um_content_year = sanitize_text_field($_POST['timeline_um_content_year']);
@@ -606,7 +599,6 @@ function meta_boxes_timeline_um_save($post_id)
     $timeline_um_taxonomy_category = stripslashes_deep($_POST['timeline_um_taxonomy_category']);
 
     $timeline_um_post_ids = stripslashes_deep($_POST['timeline_um_post_ids']);
-
 
     $timeline_um_middle_line_bg = sanitize_text_field($_POST['timeline_um_middle_line_bg']);
     $timeline_um_middle_circle_bg = sanitize_text_field($_POST['timeline_um_middle_circle_bg']);
