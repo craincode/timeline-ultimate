@@ -245,7 +245,6 @@ function timeline_um_body_ajax_flat(): never
     $timeline_um_items_categories = get_post_meta($post_id, 'timeline_um_items_categories', true);
 
     $timeline_um_body = '';
-    global $wp_query;
 
     if (($timeline_um_content_source == "latest")) {
         $wp_query = new WP_Query(

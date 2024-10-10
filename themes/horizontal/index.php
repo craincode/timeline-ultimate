@@ -175,29 +175,10 @@ function timeline_um_body_horizontal($post_id): string
             }
 
             $timeline_um_body .= '</div>';
-            $timeline_um_body .= '<div class="timeline_um-share" >
-			<span class="fb">
-				<a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=' . get_permalink() . '"> </a>
-			</span>
-			<span class="twitter">
-				<a target="_blank" href="https://twitter.com/intent/tweet?url=' . get_permalink(
-                ) . '&text=' . get_the_title() . '"></a>
-			</span>
-			<span class="gplus">
-				<a target="_blank" href="https://plus.google.com/share?url=' . get_permalink() . '"></a>
-			</span>
-			</div>';
-
-            $timeline_um_body .= '<div class="timeline_um-content" style="color:' . $timeline_um_items_content_color . ';font-size:' . $timeline_um_items_content_font_size . '">' . timeline_um_get_content(
-                    $timeline_um_post_content,
-                    get_the_ID(),
-                    $post_id
-                ) . '
-			</div>';
-
-            $timeline_um_body .= '</div>
-
-		</li>';
+            $timeline_um_body .= '<div class="timeline_um-content" style="color:' . $timeline_um_items_content_color . ';font-size:' . $timeline_um_items_content_font_size . '">';
+            $timeline_um_body .= timeline_um_get_content($timeline_um_post_content, get_the_ID(), $post_id);
+            $timeline_um_body .= '</div><!-- .timeline_um-content -->';
+            $timeline_um_body .= '</div></li>';
 
             $i++;
         endwhile;
@@ -244,8 +225,6 @@ function timeline_um_body_ajax_horizontal(): never
 
     $timeline_um_body = '';
 
-    global $wp_query;
-
     if (($timeline_um_content_source == "latest")) {
         $wp_query = new WP_Query(
             [
@@ -254,7 +233,6 @@ function timeline_um_body_ajax_horizontal(): never
                 'order' => 'DESC',
                 'posts_per_page' => $timeline_um_total_items,
                 'offset' => $offset,
-
             ]
         );
     } elseif (($timeline_um_content_source == "older")) {
@@ -265,7 +243,6 @@ function timeline_um_body_ajax_horizontal(): never
                 'order' => 'ASC',
                 'posts_per_page' => $timeline_um_total_items,
                 'offset' => $offset,
-
             ]
         );
     } elseif (($timeline_um_content_source == "featured")) {
@@ -280,7 +257,6 @@ function timeline_um_body_ajax_horizontal(): never
                 ],
                 'posts_per_page' => $timeline_um_total_items,
                 'offset' => $offset,
-
             ]
         );
     } elseif (($timeline_um_content_source == "year")) {
@@ -300,7 +276,6 @@ function timeline_um_body_ajax_horizontal(): never
                 'monthnum' => $timeline_um_content_month,
                 'posts_per_page' => $timeline_um_total_items,
                 'offset' => $offset,
-
             ]
         );
     } elseif ($timeline_um_content_source = "taxonomy") {
@@ -316,7 +291,6 @@ function timeline_um_body_ajax_horizontal(): never
                         'terms' => $timeline_um_taxonomy_category,
                     ],
                 ],
-
             ]
         );
     } elseif (($timeline_um_content_source == "post_id")) {
@@ -326,7 +300,6 @@ function timeline_um_body_ajax_horizontal(): never
                 'post_type' => $timeline_um_posttype,
                 'posts_per_page' => $timeline_um_total_items,
                 'offset' => $offset,
-
             ]
         );
     }
