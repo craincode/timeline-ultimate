@@ -27,11 +27,13 @@ add_action('plugins_loaded', static function (): void {
         wp_register_script('timeline_um', plugins_url('/js/scripts.js', __FILE__), ['jquery']);
         wp_localize_script('timeline_um', 'timelineUltimate', ['ajaxurl' => admin_url('admin-ajax.php')]);
 
-        $themes = [];
         foreach (glob(TIMELINE_UM_PLUGIN_DIR . 'themes/*/style.css') as $filename) {
             preg_match('/themes\/(\w+)\/style/', $filename, $matches);
-            $themes[$matches[1]] = plugins_url(str_replace(TIMELINE_UM_PLUGIN_DIR, '', $filename), __FILE__);
-            wp_register_style("timeline_um-$matches[1]", esc_url($themes[$matches[1]]));
+            wp_register_style(
+                "timeline_um-$matches[1]",
+                esc_url(plugins_url(str_replace(TIMELINE_UM_PLUGIN_DIR, '', $filename), __FILE__)),
+                get_plugin_data(__FILE__)['Version']
+            );
         }
 
         if (is_singular() && is_a($post, 'WP_Post') && has_shortcode($post->post_content, 'timeline_um')) {
@@ -63,8 +65,7 @@ add_action('plugins_loaded', static function (): void {
         wp_enqueue_style('ParaAdmin', TIMELINE_UM_PLUGIN_URL . 'ParaAdmin/css/ParaAdmin.css');
     });
 
-    add_shortcode('timeline_um', static function (array $atts): string
-    {
+    add_shortcode('timeline_um', static function (array $atts): string {
         $atts = shortcode_atts([
             'id' => 0,
         ], $atts);
@@ -84,12 +85,4 @@ add_action('plugins_loaded', static function (): void {
 
         return $timeline_um_display;
     });
-});
-
-register_activation_hook(__FILE__, static function (): void {
-    if (!is_admin() || !function_exists('get_plugin_data')) {
-        return;
-    }
-
-    update_option('timeline_um_version', get_plugin_data(__FILE__)['Version']);
 });
