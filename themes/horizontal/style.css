@@ -1,0 +1,103 @@
+.timeline_um-container {
+    display: inline-block;
+}
+
+.timeline_um-container .middle-line {
+    height: 4px;
+    position: relative;
+    top: 10px;
+}
+
+.timeline_um-horizontal {
+    display: inline-block;
+    margin: 0 !important;
+    padding: 10px !important;
+    height: 600px;
+    white-space: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.timeline_um-horizontal .timeline_um-item {
+    display: inline-block;
+    margin: 0 0 10px 0;
+    padding-bottom: 0;
+    position: relative;
+    vertical-align: top;
+    width: 400px;
+    max-height: 500px;
+    z-index: 100;
+    overflow: hidden;
+}
+
+.timeline_um-horizontal .timeline_um-read-more {
+    background: none repeat scroll 0 0 rgb(255, 255, 255);
+    position: absolute;
+    width: 358px;
+    top: 435px;
+    padding: 10px;
+}
+
+.timeline_um-horizontal .timeline_um-post {
+    background: none repeat scroll 0 0 rgb(255, 255, 255);
+    border: 1px solid rgb(174, 173, 173);
+    position: relative;
+    margin: 20px;
+    border-radius: 4px;
+}
+
+
+.timeline_um-horizontal .timeline_um-arrow {
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid white;
+    position: absolute;
+    top: -9px;
+    left: calc(50% - 10px/2);
+}
+
+
+.timeline_um-horizontal .timeline_um-button {
+    background: none repeat scroll 0 0 rgb(40, 200, 168);
+    border-radius: 50%;
+    height: 15px;
+    position: absolute;
+    top: -10px;
+    width: 15px;
+}
+
+.timeline_um-horizontal .timeline_um-button {
+    left: calc(50% - 10px/2);
+    margin: 0 20px;
+}
+
+.timeline_um-horizontal .timeline_um-thumb {
+    overflow: hidden;
+    padding: 10px;
+}
+
+.timeline_um-horizontal .timeline_um-thumb img {
+    border-radius: 0;
+    box-shadow: none;
+    width: 100%;
+}
+
+.timeline_um-horizontal .timeline_um-title {
+    font-size: 15px;
+    padding: 10px;
+    text-align: left;
+}
+
+.timeline_um-horizontal .timeline_um-meta {
+    font-size: 12px;
+    padding: 0 10px 10px;
+    text-align: left;
+}
+
+.timeline_um-horizontal .timeline_um-content {
+    padding: 0 10px;
+    text-align: left;
+    z-index: 10;
+}

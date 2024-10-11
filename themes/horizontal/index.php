@@ -1,0 +1,192 @@
+<?php
+
+function timeline_um_body_horizontal($post_id): string
+{
+    $timeline_um_bg_img = get_post_meta($post_id, 'timeline_um_bg_img', true);
+    $timeline_um_themes = get_post_meta($post_id, 'timeline_um_themes', true);
+    $timeline_um_total_items = get_post_meta($post_id, 'timeline_um_total_items', true);
+    $timeline_um_content_source = get_post_meta($post_id, 'timeline_um_content_source', true);
+    $timeline_um_content_year = get_post_meta($post_id, 'timeline_um_content_year', true);
+    $timeline_um_content_month = get_post_meta($post_id, 'timeline_um_content_month', true);
+    $timeline_um_content_month_year = get_post_meta($post_id, 'timeline_um_content_month_year', true);
+    $timeline_um_post_content = get_post_meta($post_id, 'timeline_um_post_content', true);
+    $timeline_um_posttype = get_post_meta($post_id, 'timeline_um_posttype', true);
+    $timeline_um_taxonomy = get_post_meta($post_id, 'timeline_um_taxonomy', true);
+    $timeline_um_taxonomy_category = get_post_meta($post_id, 'timeline_um_taxonomy_category', true);
+    $timeline_um_post_ids = get_post_meta($post_id, 'timeline_um_post_ids', true);
+    $timeline_um_middle_line_bg = get_post_meta($post_id, 'timeline_um_middle_line_bg', true);
+    $timeline_um_middle_circle_bg = get_post_meta($post_id, 'timeline_um_middle_circle_bg', true);
+    $timeline_um_items_title_color = get_post_meta($post_id, 'timeline_um_items_title_color', true);
+    $timeline_um_items_title_font_size = get_post_meta($post_id, 'timeline_um_items_title_font_size', true);
+    $timeline_um_items_content_color = get_post_meta($post_id, 'timeline_um_items_content_color', true);
+    $timeline_um_items_content_font_size = get_post_meta($post_id, 'timeline_um_items_content_font_size', true);
+    $timeline_um_items_thumb_size = get_post_meta($post_id, 'timeline_um_items_thumb_size', true);
+    $timeline_um_items_thumb_max_hieght = get_post_meta($post_id, 'timeline_um_items_thumb_max_hieght', true);
+    $timeline_um_items_date = get_post_meta($post_id, 'timeline_um_items_date', true);
+    $timeline_um_items_author = get_post_meta($post_id, 'timeline_um_items_author', true);
+    $timeline_um_items_categories = get_post_meta($post_id, 'timeline_um_items_categories', true);
+
+    $timeline_um_body = '';
+
+    if (!empty($timeline_um_bg_img)) {
+        $timeline_um_body .= '<div class="timeline_um-container" style="background-image:url(' . $timeline_um_bg_img . ')">';
+    } else {
+        $timeline_um_body .= '<div class="timeline_um-container">';
+    }
+
+    $timeline_um_body .= '
+		<div style="background:' . $timeline_um_middle_line_bg . '" class="middle-line"></div>
+		<ul class="timeline_um-items timeline_um-' . $post_id . ' timeline_um-' . $timeline_um_themes . '">';
+
+    global $wp_query;
+
+    if (($timeline_um_content_source == "latest")) {
+        $wp_query = new WP_Query(
+            [
+                'post_type' => $timeline_um_posttype,
+                'orderby' => 'date',
+                'order' => 'DESC',
+                'posts_per_page' => $timeline_um_total_items,
+            ]
+        );
+    } elseif (($timeline_um_content_source == "older")) {
+        $wp_query = new WP_Query(
+            [
+                'post_type' => $timeline_um_posttype,
+                'orderby' => 'date',
+                'order' => 'ASC',
+                'posts_per_page' => $timeline_um_total_items,
+            ]
+        );
+    } elseif (($timeline_um_content_source == "featured")) {
+        $wp_query = new WP_Query(
+            [
+                'post_type' => $timeline_um_posttype,
+                'meta_query' => [
+                    [
+                        'key' => '_featured',
+                        'value' => 'yes',
+                    ],
+                ],
+                'posts_per_page' => $timeline_um_total_items,
+            ]
+        );
+    } elseif (($timeline_um_content_source == "year")) {
+        $wp_query = new WP_Query(
+            [
+                'post_type' => $timeline_um_posttype,
+                'year' => $timeline_um_content_year,
+                'posts_per_page' => $timeline_um_total_items,
+            ]
+        );
+    } elseif (($timeline_um_content_source == "month")) {
+        $wp_query = new WP_Query(
+            [
+                'post_type' => $timeline_um_posttype,
+                'year' => $timeline_um_content_month_year,
+                'monthnum' => $timeline_um_content_month,
+                'posts_per_page' => $timeline_um_total_items,
+            ]
+        );
+    } elseif ($timeline_um_content_source = "taxonomy") {
+        $wp_query = new WP_Query(
+            [
+                'post_type' => $timeline_um_posttype,
+                'posts_per_page' => $timeline_um_total_items,
+
+                'tax_query' => [
+                    [
+                        'taxonomy' => $timeline_um_taxonomy,
+                        'field' => 'id',
+                        'terms' => $timeline_um_taxonomy_category,
+                    ],
+                ],
+            ]
+        );
+    } elseif (($timeline_um_content_source == "post_id")) {
+        $wp_query = new WP_Query(
+            [
+                'post__in' => $timeline_um_post_ids,
+                'post_type' => $timeline_um_posttype,
+            ]
+        );
+    }
+
+    if ($wp_query->have_posts()) :
+        $i = 0;
+
+        while ($wp_query->have_posts()) : $wp_query->the_post();
+
+            $timeline_um_featured = get_post_meta(get_the_ID(), '_featured', true);
+            $timeline_um_thumb = wp_get_attachment_image_src(
+                get_post_thumbnail_id(get_the_ID()),
+                $timeline_um_items_thumb_size
+            );
+            $timeline_um_thumb_url = $timeline_um_thumb['0'];
+
+            if ($i % 2 == 0) {
+                $even_odd = "even";
+            } else {
+                $even_odd = "odd";
+            }
+
+            $timeline_um_body .= '<li class="timeline_um-item ' . $even_odd . '" data-oddeven="' . $even_odd . '">';
+            $timeline_um_body .= '<div style="background:' . $timeline_um_middle_circle_bg . '" class="timeline_um-button"></div>';
+            $timeline_um_body .= '<div class="timeline_um-post">';
+            $timeline_um_body .= '<div class="timeline_um-read-more"><a class="more-link" href="' . get_permalink() . '">Read More</a></div>';
+            $timeline_um_body .= '<div class="timeline_um-arrow"></div>';
+
+            if ($timeline_um_featured == "yes") {
+                $timeline_um_body .= '<div class="timeline_um-featured"></div>';
+            }
+
+            if (!empty($timeline_um_thumb_url)) {
+                $timeline_um_body .= '<div style="max-height:' . $timeline_um_items_thumb_max_hieght . ';" class="timeline_um-thumb">
+					<a href="' . get_permalink() . '"><img src="' . $timeline_um_thumb_url . '" /></a>
+					</div>';
+            }
+
+            $timeline_um_body .= '<div class="timeline_um-title" style="color:' . $timeline_um_items_title_color . ';font-size:' . $timeline_um_items_title_font_size . '">' . get_the_title(
+                ) . '
+			</div>';
+
+            $categories = get_the_category();
+            $separator = ', ';
+            $category_output = '';
+            if ($categories) {
+                foreach ($categories as $category) {
+                    $category_output .= '<a href="' . get_category_link($category->term_id) . '" title="' . esc_attr(
+                            sprintf(__("View all posts in %s"), $category->name)
+                        ) . '">' . $category->cat_name . '</a>' . $separator;
+                }
+            }
+
+            $timeline_um_body .= '<div class="timeline_um-meta" style="color:' . $timeline_um_items_content_color . ';">';
+            if ($timeline_um_items_date == 'yes') {
+                $timeline_um_body .= 'Date: ' . get_the_date();
+            }
+
+            if ($timeline_um_items_author == 'yes') {
+                $timeline_um_body .= ' By: ' . get_the_author();
+            }
+
+            if ($timeline_um_items_categories == 'yes') {
+                $timeline_um_body .= ' Category: ' . trim($category_output, $separator);
+            }
+
+            $timeline_um_body .= '</div>';
+            $timeline_um_body .= '<div class="timeline_um-content" style="color:' . $timeline_um_items_content_color . ';font-size:' . $timeline_um_items_content_font_size . '">';
+            $timeline_um_body .= timeline_um_get_content($timeline_um_post_content, get_the_ID(), $post_id);
+            $timeline_um_body .= '</div><!-- .timeline_um-content -->';
+            $timeline_um_body .= '</div></li>';
+
+            $i++;
+        endwhile;
+
+        wp_reset_query();
+    endif;
+
+    $timeline_um_body .= '</ul></div>';
+
+    return $timeline_um_body;
+}
