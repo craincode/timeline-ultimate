@@ -583,35 +583,26 @@ function meta_boxes_timeline_um_save(?int $post_id): void
     // Sanitize user input.
     $timeline_um_bg_img = sanitize_text_field($_POST['timeline_um_bg_img']);
     $timeline_um_themes = sanitize_text_field($_POST['timeline_um_themes']);
-    $timeline_um_total_items = sanitize_text_field($_POST['timeline_um_total_items']);
-
+    $timeline_um_total_items = sanitize_text_field(absint($_POST['timeline_um_total_items']));
     $timeline_um_post_content = sanitize_text_field($_POST['timeline_um_post_content']);
     $timeline_um_post_excerpt_count = sanitize_text_field($_POST['timeline_um_post_excerpt_count']);
     $timeline_um_post_excerpt_text = sanitize_text_field($_POST['timeline_um_post_excerpt_text']);
-
     $timeline_um_content_source = sanitize_text_field($_POST['timeline_um_content_source']);
     $timeline_um_content_year = sanitize_text_field($_POST['timeline_um_content_year']);
     $timeline_um_content_month = sanitize_text_field($_POST['timeline_um_content_month']);
     $timeline_um_content_month_year = sanitize_text_field($_POST['timeline_um_content_month_year']);
-
     $timeline_um_posttype = stripslashes_deep($_POST['timeline_um_posttype']);
     $timeline_um_taxonomy = sanitize_text_field($_POST['timeline_um_taxonomy']);
     $timeline_um_taxonomy_category = stripslashes_deep($_POST['timeline_um_taxonomy_category']);
-
     $timeline_um_post_ids = stripslashes_deep($_POST['timeline_um_post_ids'] ?? '');
-
     $timeline_um_middle_line_bg = sanitize_text_field($_POST['timeline_um_middle_line_bg']);
     $timeline_um_middle_circle_bg = sanitize_text_field($_POST['timeline_um_middle_circle_bg']);
-
     $timeline_um_items_title_color = sanitize_text_field($_POST['timeline_um_items_title_color']);
     $timeline_um_items_title_font_size = sanitize_text_field($_POST['timeline_um_items_title_font_size']);
-
     $timeline_um_items_content_color = sanitize_text_field($_POST['timeline_um_items_content_color']);
     $timeline_um_items_content_font_size = sanitize_text_field($_POST['timeline_um_items_content_font_size']);
-
     $timeline_um_items_thumb_size = sanitize_text_field($_POST['timeline_um_items_thumb_size']);
     $timeline_um_items_thumb_max_hieght = sanitize_text_field($_POST['timeline_um_items_thumb_max_hieght']);
-
     $timeline_um_items_date = sanitize_text_field($_POST['timeline_um_items_date']);
     $timeline_um_items_author = sanitize_text_field($_POST['timeline_um_items_author']);
     $timeline_um_items_categories = sanitize_text_field($_POST['timeline_um_items_categories']);
