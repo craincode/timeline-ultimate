@@ -32,7 +32,7 @@ add_action('plugins_loaded', static function (): void {
             [],
             '11.1.14'
         );
-        wp_register_script('timeline_um', plugins_url('/assets/js/scripts.js', __FILE__), ['jquery', 'swiper']);
+        wp_register_script('timeline_um', plugins_url('/assets/js/scripts.js', __FILE__), ['jquery']);
         wp_localize_script('timeline_um', 'timelineUltimate', ['ajaxurl' => admin_url('admin-ajax.php')]);
 
         foreach (glob(TIMELINE_UM_PLUGIN_DIR . 'themes/*/style.css') as $filename) {
@@ -54,6 +54,35 @@ add_action('plugins_loaded', static function (): void {
                 $atts = shortcode_parse_atts($matches[3][0] ?? '');
                 $theme = !isset($atts['id']) ? '' : get_post_meta($atts['id'], 'timeline_um_themes', true);
                 wp_enqueue_style("timeline_um-$theme");
+                if ($theme === 'horizontal') {
+                    wp_enqueue_script('swiper');
+                    wp_add_inline_script('swiper', function (): string {
+                        return <<<JS
+const swiper = new Swiper('.swiper', {
+  // Optional parameters
+  direction: 'vertical',
+  loop: true,
+
+  // If we need pagination
+  pagination: {
+    el: '.swiper-pagination',
+  },
+
+  // Navigation arrows
+  navigation: {
+    nextEl: '.swiper-button-next',
+    prevEl: '.swiper-button-prev',
+  },
+
+  // And if we need scrollbar
+  scrollbar: {
+    el: '.swiper-scrollbar',
+  },
+})
+JS;
+                    });
+                    wp_enqueue_style('swiper');
+                }
             }
         }
     });
