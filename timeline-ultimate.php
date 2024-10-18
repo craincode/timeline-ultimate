@@ -40,6 +40,7 @@ add_action('plugins_loaded', static function (): void {
             wp_register_style(
                 "timeline_um-$matches[1]",
                 esc_url(plugins_url(str_replace(TIMELINE_UM_PLUGIN_DIR, '', $filename), __FILE__)),
+                $matches[1] === 'horizontal' ? ['swiper'] : [],
                 strval(filemtime($filename)),
             );
         }
@@ -54,26 +55,6 @@ add_action('plugins_loaded', static function (): void {
                 $atts = shortcode_parse_atts($matches[3][0] ?? '');
                 $theme = !isset($atts['id']) ? '' : get_post_meta($atts['id'], 'timeline_um_themes', true);
                 wp_enqueue_style("timeline_um-$theme");
-                if ($theme === 'horizontal') {
-                    wp_enqueue_script('swiper');
-                    $data = static function() : string {
-                        return <<<JS
-const swiper = new Swiper('.swiper', {
-  direction: 'horizontal',
-  loop: true,
-  pagination: {
-    el: '.swiper-pagination'
-  },
-  navigation: {
-    nextEl: '.swiper-button-next',
-    prevEl: '.swiper-button-prev'
-  }
-})
-JS;
-                    };
-                    wp_add_inline_script('swiper', $data());
-                    wp_enqueue_style('swiper');
-                }
             }
         }
     });
@@ -106,6 +87,25 @@ JS;
         $post_id = absint($atts['id']);
 
         $theme = get_post_meta($post_id, 'timeline_um_themes', true);
+        if ($theme === 'horizontal') {
+            wp_enqueue_script('swiper');
+            $data = static function() : string {
+                return <<<JS
+const swiper = new Swiper('.swiper', {
+  direction: 'horizontal',
+  loop: true,
+  pagination: {
+    el: '.swiper-pagination'
+  },
+  navigation: {
+    nextEl: '.swiper-button-next',
+    prevEl: '.swiper-button-prev'
+  }
+})
+JS;
+            };
+            wp_add_inline_script('swiper', $data());
+        }
         wp_enqueue_script('timeline_um');
         wp_enqueue_style("timeline_um-$theme");
 
