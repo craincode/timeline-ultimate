@@ -272,7 +272,7 @@ function meta_boxes_timeline_um_input($post): void
                     </script>
                     <?php
 
-                    $dir_path = TIMELINE_UM_PLUGIN_DIR . "css/bg/";
+                    $dir_path = TIMELINE_UM_PLUGIN_DIR . "assets/css/bg/";
                     $filenames = glob($dir_path . "*.png*");
 
                     $timeline_um_bg_img = get_post_meta($post->ID, 'timeline_um_bg_img', true);
@@ -288,7 +288,7 @@ function meta_boxes_timeline_um_input($post): void
 
                     while ($i < $count) {
                         $filelink = str_replace($dir_path, "", $filenames[$i]);
-                        $filelink = TIMELINE_UM_PLUGIN_URL . "css/bg/" . $filelink;
+                        $filelink = TIMELINE_UM_PLUGIN_URL . "assets/css/bg/" . $filelink;
 
                         if ($timeline_um_bg_img == $filelink) {
                             echo '<li  class="bg-selected" data-url="' . $filelink . '">';
@@ -592,7 +592,7 @@ function meta_boxes_timeline_um_save(?int $post_id): void
     $timeline_um_content_month = sanitize_text_field($_POST['timeline_um_content_month']);
     $timeline_um_content_month_year = sanitize_text_field($_POST['timeline_um_content_month_year']);
     $timeline_um_posttype = stripslashes_deep($_POST['timeline_um_posttype']);
-    $timeline_um_taxonomy = sanitize_text_field($_POST['timeline_um_taxonomy']);
+    $timeline_um_taxonomy = sanitize_text_field($_POST['timeline_um_taxonomy'] ?? '');
     $timeline_um_taxonomy_category = stripslashes_deep($_POST['timeline_um_taxonomy_category']);
     $timeline_um_post_ids = stripslashes_deep($_POST['timeline_um_post_ids'] ?? '');
     $timeline_um_middle_line_bg = sanitize_text_field($_POST['timeline_um_middle_line_bg']);

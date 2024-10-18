@@ -80,18 +80,3 @@
     height: 100%;
     width: 100%;
 }
-
-.timeline_um-container .timeline_um-share .fb {
-    background: url("facebook.png") no-repeat scroll 0 0 / 100% auto #4368B4;
-    background-image: url("facebook.png");
-}
-
-.timeline_um-container .timeline_um-share .twitter {
-    background: url("twitter.png") no-repeat scroll 0 0 / 100% auto #49C8F5;
-    background-image: url("twitter.png");
-}
-
-.timeline_um-container .timeline_um-share .gplus {
-    background: url("google-plus.png") no-repeat scroll 0 0 / 100% auto #FF0000;
-    background-image: url("google-plus.png");
-}

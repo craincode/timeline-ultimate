@@ -176,21 +176,6 @@ function timeline_um_body_flat($post_id): string
 
             $timeline_um_body .= '</div>';
 
-
-            $timeline_um_body .= '<div class="timeline_um-share" >
-			<span class="fb">
-				<a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=' . get_permalink() . '"> </a>
-			</span>
-			<span class="twitter">
-				<a target="_blank" href="https://twitter.com/intent/tweet?url=' . get_permalink(
-                ) . '&text=' . get_the_title() . '"></a>
-			</span>
-			<span class="gplus">
-				<a target="_blank" href="https://plus.google.com/share?url=' . get_permalink() . '"></a>
-			</span>
-			</div>';
-
-
             $timeline_um_body .= '<div class="timeline_um-content" style="color:' . $timeline_um_items_content_color . ';font-size:' . $timeline_um_items_content_font_size . '">' . timeline_um_get_content(
                     $timeline_um_post_content,
                     get_the_ID(),

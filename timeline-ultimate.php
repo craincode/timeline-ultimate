@@ -24,7 +24,7 @@ add_action('plugins_loaded', static function (): void {
 
     add_action('wp_enqueue_scripts', static function (): void {
         global $post;
-        wp_register_script('timeline_um', plugins_url('/js/scripts.js', __FILE__), ['jquery']);
+        wp_register_script('timeline_um', plugins_url('/assets/js/scripts.js', __FILE__), ['jquery']);
         wp_localize_script('timeline_um', 'timelineUltimate', ['ajaxurl' => admin_url('admin-ajax.php')]);
 
         foreach (glob(TIMELINE_UM_PLUGIN_DIR . 'themes/*/style.css') as $filename) {
@@ -55,19 +55,19 @@ add_action('plugins_loaded', static function (): void {
             return;
         }
 
-        wp_enqueue_style('timeline_um', TIMELINE_UM_PLUGIN_URL . 'css/style.css');
+        wp_enqueue_style('timeline_um',  plugins_url('assets/css/style.css', __FILE__));
 
         wp_enqueue_script('ParaAdmin', plugins_url('ParaAdmin/js/ParaAdmin.js', __FILE__), ['jquery']);
         wp_enqueue_script('wp-color-picker');
         wp_enqueue_script(
             'timeline_um-color-picker',
-            plugins_url('/js/color-picker.js', __FILE__),
+            plugins_url('/assets/js/color-picker.js', __FILE__),
             ['wp-color-picker'],
             false,
             true
         );
 
-        wp_enqueue_style('ParaAdmin', TIMELINE_UM_PLUGIN_URL . 'ParaAdmin/css/ParaAdmin.css');
+        wp_enqueue_style('ParaAdmin', plugins_url('ParaAdmin/css/ParaAdmin.css', __FILE__));
     });
 
     add_shortcode('timeline_um', static function (array $atts): string {
