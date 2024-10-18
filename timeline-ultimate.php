@@ -25,9 +25,9 @@ add_action('plugins_loaded', static function (): void {
     add_action('wp_enqueue_scripts', static function (): void {
         global $post;
         $suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
-        wp_register_script('swiper', plugins_url("/assets/js/vendor/swiper-bundle$suffix.js", __FILE__), [], '11.1.14');
+        wp_register_script('swiperjs', plugins_url("/assets/js/vendor/swiper-bundle$suffix.js", __FILE__), [], '11.1.14');
         wp_register_style(
-            'swiper',
+            'swiperjs',
             plugins_url("/assets/css/vendor/swiper-bundle$suffix.css", __FILE__),
             [],
             '11.1.14'
@@ -55,6 +55,9 @@ add_action('plugins_loaded', static function (): void {
                 $atts = shortcode_parse_atts($matches[3][0] ?? '');
                 $theme = !isset($atts['id']) ? '' : get_post_meta($atts['id'], 'timeline_um_themes', true);
                 wp_enqueue_style("timeline_um-$theme");
+                if ($theme === 'horizontal') {
+                    wp_enqueue_style('swiperjs');
+                }
             }
         }
     });
@@ -88,7 +91,7 @@ add_action('plugins_loaded', static function (): void {
 
         $theme = get_post_meta($post_id, 'timeline_um_themes', true);
         if ($theme === 'horizontal') {
-            wp_enqueue_script('swiper');
+            wp_enqueue_script('swiperjs');
             $data = static function() : string {
                 return <<<JS
 const swiper = new Swiper('.swiper', {
@@ -104,7 +107,7 @@ const swiper = new Swiper('.swiper', {
 })
 JS;
             };
-            wp_add_inline_script('swiper', $data());
+            wp_add_inline_script('swiperjs', $data());
         }
         wp_enqueue_script('timeline_um');
         wp_enqueue_style("timeline_um-$theme");
