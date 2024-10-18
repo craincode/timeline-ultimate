@@ -56,31 +56,22 @@ add_action('plugins_loaded', static function (): void {
                 wp_enqueue_style("timeline_um-$theme");
                 if ($theme === 'horizontal') {
                     wp_enqueue_script('swiper');
-                    wp_add_inline_script('swiper', function (): string {
+                    $data = static function() : string {
                         return <<<JS
 const swiper = new Swiper('.swiper', {
-  // Optional parameters
-  direction: 'vertical',
+  direction: 'horizontal',
   loop: true,
-
-  // If we need pagination
   pagination: {
-    el: '.swiper-pagination',
+    el: '.swiper-pagination'
   },
-
-  // Navigation arrows
   navigation: {
     nextEl: '.swiper-button-next',
-    prevEl: '.swiper-button-prev',
-  },
-
-  // And if we need scrollbar
-  scrollbar: {
-    el: '.swiper-scrollbar',
-  },
+    prevEl: '.swiper-button-prev'
+  }
 })
 JS;
-                    });
+                    };
+                    wp_add_inline_script('swiper', $data());
                     wp_enqueue_style('swiper');
                 }
             }
