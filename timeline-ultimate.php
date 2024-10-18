@@ -24,7 +24,15 @@ add_action('plugins_loaded', static function (): void {
 
     add_action('wp_enqueue_scripts', static function (): void {
         global $post;
-        wp_register_script('timeline_um', plugins_url('/assets/js/scripts.js', __FILE__), ['jquery']);
+        $suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
+        wp_register_script('swiper', plugins_url("/assets/js/vendor/swiper-bundle$suffix.js", __FILE__), [], '11.1.14');
+        wp_register_style(
+            'swiper',
+            plugins_url("/assets/css/vendor/swiper-bundle$suffix.css", __FILE__),
+            [],
+            '11.1.14'
+        );
+        wp_register_script('timeline_um', plugins_url('/assets/js/scripts.js', __FILE__), ['jquery', 'swiper']);
         wp_localize_script('timeline_um', 'timelineUltimate', ['ajaxurl' => admin_url('admin-ajax.php')]);
 
         foreach (glob(TIMELINE_UM_PLUGIN_DIR . 'themes/*/style.css') as $filename) {
@@ -55,7 +63,7 @@ add_action('plugins_loaded', static function (): void {
             return;
         }
 
-        wp_enqueue_style('timeline_um',  plugins_url('assets/css/style.css', __FILE__));
+        wp_enqueue_style('timeline_um', plugins_url('assets/css/style.css', __FILE__));
 
         wp_enqueue_script('ParaAdmin', plugins_url('ParaAdmin/js/ParaAdmin.js', __FILE__), ['jquery']);
         wp_enqueue_script('wp-color-picker');
