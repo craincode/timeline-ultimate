@@ -53,20 +53,15 @@ function timeline_um_get_taxonomy_category($postid)
     }
     $timeline_um_taxonomy_category = get_post_meta($postid, 'timeline_um_taxonomy_category', true);
 
-
     if (empty($timeline_um_taxonomy_category)) {
         $timeline_um_taxonomy_category = ['none']; // an empty array when no category element selected
-
-
     }
-
 
     if (!isset($_POST['taxonomy'])) {
         $taxonomy = $timeline_um_taxonomy;
     } else {
         $taxonomy = $_POST['taxonomy'];
     }
-
 
     $args = [
         'orderby' => 'name',
@@ -76,14 +71,11 @@ function timeline_um_get_taxonomy_category($postid)
 
     $categories = get_categories($args);
 
-
     if (empty($categories)) {
         echo "No Items Found!";
     }
 
-
-    $return_string = '';
-    $return_string .= '<ul style="margin: 0;">';
+    $return_string = '<ul style="margin: 0;">';
 
     foreach ($categories as $category) {
         if (array_search($category->cat_ID, $timeline_um_taxonomy_category)) {
@@ -105,8 +97,7 @@ function timeline_um_get_taxonomy_category($postid)
 add_action('wp_ajax_timeline_um_get_taxonomy_category', 'timeline_um_get_taxonomy_category');
 add_action('wp_ajax_nopriv_timeline_um_get_taxonomy_category', 'timeline_um_get_taxonomy_category');
 
-
-function timeline_um_dark_color($input_color)
+function timeline_um_dark_color($input_color): string
 {
     if (empty($input_color)) {
         return "";
@@ -128,12 +119,10 @@ function timeline_um_dark_color($input_color)
     }
 }
 
-
-function timeline_um_get_content($timeline_um_post_content, $post_id, $shortcode_id)
+function timeline_um_get_content(string $timeline_um_post_content, int $post_id, int $shortcode_id): string
 {
     $post_content = get_post($post_id);
     $post_content = $post_content->post_content;
-
 
     if ($timeline_um_post_content == "full") {
         $timeline_um_post_content = apply_filters('the_content', $post_content);

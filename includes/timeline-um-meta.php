@@ -29,14 +29,20 @@ function timeline_um_posttype_register()
         'menu_position' => null,
         'supports' => ['title'],
         'menu_icon' => 'dashicons-media-spreadsheet',
-
     ];
 
     register_post_type('timeline_um', $args);
+    remove_post_type_support('timeline_um', 'elementor');
 }
 
 add_action('init', 'timeline_um_posttype_register');
 
+add_action('add_meta_boxes', static function (): void {
+    remove_meta_box('wpseo_meta', 'timeline_um', 'normal');
+    remove_meta_box('yoast_internal_linking', 'timeline_um', 'side');
+    remove_meta_box('slider_revolution_metabox', 'timeline_um', 'side');
+    remove_meta_box('lh_archive_post_status-archive_date-div', 'timeline_um', 'side');
+}, 100);
 
 /**
  * Adds a box to the main column on the Post and Page edit screens.
@@ -54,11 +60,9 @@ function meta_boxes_timeline_um()
 add_action('add_meta_boxes', 'meta_boxes_timeline_um');
 
 
-function meta_boxes_timeline_um_input($post)
+function meta_boxes_timeline_um_input($post): void
 {
-    global $post;
     wp_nonce_field('meta_boxes_timeline_um_input', 'meta_boxes_timeline_um_input_nonce');
-
 
     $timeline_um_bg_img = get_post_meta($post->ID, 'timeline_um_bg_img', true);
     $timeline_um_themes = get_post_meta($post->ID, 'timeline_um_themes', true);
@@ -130,9 +134,9 @@ function meta_boxes_timeline_um_input($post)
                 <div class="option-box">
                     <p class="option-title">Number of post to display.</p>
                     <p class="option-info"></p>
-                    <input type="text" placeholder="ex:5 - Number Only" name="timeline_um_total_items" value="<?php
+                    <input type="number" placeholder="5" name="timeline_um_total_items" value="<?php
                     if (!empty($timeline_um_total_items)) {
-                        echo $timeline_um_total_items;
+                        echo absint($timeline_um_total_items);
                     } else {
                         echo 5;
                     } ?>"/>
@@ -170,7 +174,7 @@ function meta_boxes_timeline_um_input($post)
                     </select>
                 </div>
                 <div class="option-box">
-                    <p class="option-title">Thumbnail max hieght(px)</p>
+                    <p class="option-title">Thumbnail max height(px)</p>
                     <p class="option-info"></p>
                     <input type="text" name="timeline_um_items_thumb_max_hieght" placeholder="ex:150px number with px"
                            id="timeline_um_items_thumb_max_hieght" value="<?php
@@ -239,36 +243,37 @@ function meta_boxes_timeline_um_input($post)
                     <p class="option-title">Themes</p>
                     <p class="option-info"></p>
                     <select name="timeline_um_themes">
-                        <option class="timeline_um_themes_flat" value="flat" <?php
-                        if ($timeline_um_themes == "flat") {
-                            echo "selected";
-                        } ?>>Flat
-                        </option>
+                        <?php
+                        foreach (glob(TIMELINE_UM_PLUGIN_DIR . 'themes/*/index.php') as $filename) {
+                            preg_match('/themes\/(\w+)\/index/', $filename, $theme);
+                            printf(
+                                '<option class="timeline_um_themes" value="%1$s" %2$s>%1$s</option>',
+                                $theme['1'],
+                                selected($theme['1'], $timeline_um_themes)
+                            );
+                        }
+                        ?>
                     </select>
                 </div>
                 <div class="option-box">
                     <p class="option-title">Background Image</p>
                     <p class="option-info"></p>
                     <script>
-                      jQuery(document).ready(function (jQuery) {
-                        jQuery('.timeline_um_bg_img_list li').click(function () {
-                          jQuery('.timeline_um_bg_img_list li.bg-selected').removeClass('bg-selected')
-                          jQuery(this).addClass('bg-selected')
+                      jQuery(document).ready(function ($) {
+                        $('.timeline_um_bg_img_list li').on('click', function () {
+                          $('.timeline_um_bg_img_list li.bg-selected').removeClass('bg-selected')
+                          $(this).addClass('bg-selected')
 
-                          var timeline_um_bg_img = jQuery(this).attr('data-url')
+                          var timeline_um_bg_img = $(this).attr('data-url')
 
-                          jQuery('#timeline_um_bg_img').val(timeline_um_bg_img)
-
+                          $('#timeline_um_bg_img').val(timeline_um_bg_img)
                         })
-
                       })
-
                     </script>
                     <?php
 
-                    $dir_path = timeline_um_plugin_dir . "css/bg/";
+                    $dir_path = TIMELINE_UM_PLUGIN_DIR . "assets/css/bg/";
                     $filenames = glob($dir_path . "*.png*");
-
 
                     $timeline_um_bg_img = get_post_meta($post->ID, 'timeline_um_bg_img', true);
 
@@ -276,25 +281,20 @@ function meta_boxes_timeline_um_input($post)
                         $timeline_um_bg_img = "";
                     }
 
-
                     $count = count($filenames);
-
 
                     $i = 0;
                     echo "<ul class='timeline_um_bg_img_list' >";
 
                     while ($i < $count) {
                         $filelink = str_replace($dir_path, "", $filenames[$i]);
-
-                        $filelink = timeline_um_plugin_url . "css/bg/" . $filelink;
-
+                        $filelink = TIMELINE_UM_PLUGIN_URL . "assets/css/bg/" . $filelink;
 
                         if ($timeline_um_bg_img == $filelink) {
                             echo '<li  class="bg-selected" data-url="' . $filelink . '">';
                         } else {
                             echo '<li   data-url="' . $filelink . '">';
                         }
-
 
                         echo "<img  width='70px' height='50px' src='" . $filelink . "' />";
                         echo "</li>";
@@ -304,8 +304,6 @@ function meta_boxes_timeline_um_input($post)
                     echo "</ul>";
 
                     echo "<input style='width:100%;' value='" . $timeline_um_bg_img . "'    placeholder='Please select image or left blank' id='timeline_um_bg_img' name='timeline_um_bg_img'  type='text' />";
-
-
                     ?>
 
                 </div>
@@ -534,94 +532,77 @@ function meta_boxes_timeline_um_input($post)
                     </ul>
                 </div>
 
-
             </li>
             <li style="display: none;" class="box4 tab-box">
                 <div class="option-box">
                     <p class="option-title">Timeline Ultimate - Customized by Austin Passy @ Crain</p>
                     <?php
 
-                    $timeline_um_version = get_option('timeline_um_version');
-                    echo '<p>You are using version  ' . $timeline_um_version . '</strong> of <strong>Timeline Ultimate</strong>.';
+                    $timeline_um_version = !function_exists('') ? null : get_plugin_data(__FILE__)['Version'];
+                    if ($timeline_um_version) {
+                        printf('<p>You are using version <strong>%s</strong>.</p>', $timeline_um_version);
+                    }
                     ?>
                 </div>
             </li>
         </ul>
-
-
     </div>
-
-
     <?php
 }
 
 /**
  * When the post is saved, saves our custom data.
- *
- * @param int $post_id The ID of the post being saved.
+ * @param int|null $post_id The ID of the post being saved.
  */
-function meta_boxes_timeline_um_save($post_id)
+function meta_boxes_timeline_um_save(?int $post_id): void
 {
     /*
-     * We need to verify this came from the our screen and with proper authorization,
+     * We need to verify this came from our screen and with proper authorization,
      * because save_post can be triggered at other times.
      */
 
     // Check if our nonce is set.
-    if (!isset($_POST['meta_boxes_timeline_um_input_nonce'])) {
-        return $post_id;
+    if (!$post_id || !isset($_POST['meta_boxes_timeline_um_input_nonce'])) {
+        return;
     }
 
     $nonce = $_POST['meta_boxes_timeline_um_input_nonce'];
 
     // Verify that the nonce is valid.
     if (!wp_verify_nonce($nonce, 'meta_boxes_timeline_um_input')) {
-        return $post_id;
+        return;
     }
 
     // If this is an autosave, our form has not been submitted, so we don't want to do anything.
     if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
-        return $post_id;
+        return;
     }
 
-
-    /* OK, its safe for us to save the data now. */
+    /* OK, it's safe for us to save the data now. */
 
     // Sanitize user input.
     $timeline_um_bg_img = sanitize_text_field($_POST['timeline_um_bg_img']);
     $timeline_um_themes = sanitize_text_field($_POST['timeline_um_themes']);
-    $timeline_um_total_items = sanitize_text_field($_POST['timeline_um_total_items']);
-
-
+    $timeline_um_total_items = sanitize_text_field(absint($_POST['timeline_um_total_items']));
     $timeline_um_post_content = sanitize_text_field($_POST['timeline_um_post_content']);
     $timeline_um_post_excerpt_count = sanitize_text_field($_POST['timeline_um_post_excerpt_count']);
     $timeline_um_post_excerpt_text = sanitize_text_field($_POST['timeline_um_post_excerpt_text']);
-
-
     $timeline_um_content_source = sanitize_text_field($_POST['timeline_um_content_source']);
     $timeline_um_content_year = sanitize_text_field($_POST['timeline_um_content_year']);
     $timeline_um_content_month = sanitize_text_field($_POST['timeline_um_content_month']);
     $timeline_um_content_month_year = sanitize_text_field($_POST['timeline_um_content_month_year']);
-
     $timeline_um_posttype = stripslashes_deep($_POST['timeline_um_posttype']);
-    $timeline_um_taxonomy = sanitize_text_field($_POST['timeline_um_taxonomy']);
+    $timeline_um_taxonomy = sanitize_text_field($_POST['timeline_um_taxonomy'] ?? '');
     $timeline_um_taxonomy_category = stripslashes_deep($_POST['timeline_um_taxonomy_category']);
-
-    $timeline_um_post_ids = stripslashes_deep($_POST['timeline_um_post_ids']);
-
-
+    $timeline_um_post_ids = stripslashes_deep($_POST['timeline_um_post_ids'] ?? '');
     $timeline_um_middle_line_bg = sanitize_text_field($_POST['timeline_um_middle_line_bg']);
     $timeline_um_middle_circle_bg = sanitize_text_field($_POST['timeline_um_middle_circle_bg']);
-
     $timeline_um_items_title_color = sanitize_text_field($_POST['timeline_um_items_title_color']);
     $timeline_um_items_title_font_size = sanitize_text_field($_POST['timeline_um_items_title_font_size']);
-
     $timeline_um_items_content_color = sanitize_text_field($_POST['timeline_um_items_content_color']);
     $timeline_um_items_content_font_size = sanitize_text_field($_POST['timeline_um_items_content_font_size']);
-
     $timeline_um_items_thumb_size = sanitize_text_field($_POST['timeline_um_items_thumb_size']);
     $timeline_um_items_thumb_max_hieght = sanitize_text_field($_POST['timeline_um_items_thumb_max_hieght']);
-
     $timeline_um_items_date = sanitize_text_field($_POST['timeline_um_items_date']);
     $timeline_um_items_author = sanitize_text_field($_POST['timeline_um_items_author']);
     $timeline_um_items_categories = sanitize_text_field($_POST['timeline_um_items_categories']);
